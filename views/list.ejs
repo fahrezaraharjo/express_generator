@@ -10,37 +10,75 @@
 
 <body>
 
-    
+
     <h1>To Do</h1>
+    <div class="card">
+        <form action="" method="get">
+            <div class="card-header">
+                <h2>Pencarian</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <label for="task" class="col-sm-2">Task</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="task" name="task" />
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success">Cari</button>
+                <a href="/" class="btn btn-warning">Reset</a>
+            </div>
+        </form>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>No.</th>
                 <th>Daftar Pekerjaan</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <% data.forEach((item, index)=> { %>
                 <tr>
                     <td>
-                        <%= index + 1 %>
+                        <%= index+1 %>
                     </td>
                     <td>
                         <%= item.task %>
                     </td>
                     <td>
-                        <%= item.complete %>
+                        <%= item.complete ? 'Yes' : 'No' %>
                     </td>
                     <td>
-                        <a href="/edit/<%= index%>" class="btn btn-success">Edit</a>
-                        <a href="/delete/<%= index%>" class="btn btn-danger">Delete</a>
+                        <a href="/edit/<%= item.id %>" class="btn btn-success">Edit</a>
+                        <a href="/delete/<%= item.id %>" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
                 <% }) %>
         </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <% for(let i=1; i<=pages; i++){ %>
+                <li class="page-item <%= i  == page ? 'active' : '' %>"><a class="page-link" href="/?page=<%= i %>">
+                        <%= i %>
+                    </a></li>
+                <% } %>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+        </ul>
+    </nav>
     <a href="/add" class="btn-primary">Tambah</a>
 </body>
 
