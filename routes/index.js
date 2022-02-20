@@ -7,15 +7,29 @@ var db = new sqlite3.Database(path.join(__dirname, '..', '..', 'express', 'db', 
 
 
 /* GET home page. */
+router.get('/login', function(req, res){
+  res.render('login')
+})
+
+router.post("/login", function (req, res){
+  const email = req.body.email
+  const password =req.body.password
+
+  db.get("select * from user where email = ? and password = ?",[email, password],(err, user) =>{
+  if (err) return res.send("login failed")
+  if (!user) return res.send("you must sighup first")
+  res.redirect("/")
+  })
+})
+
 router.get('/', function (req, res,) {
+
+  const url = req.url == "/" ? "/?page=1" : req.url
 
   const params = []
 
 
 
-  router.get('/login', function(req, res){
-    res.render('login')
-  })
 
 
   if (req.query.task) {
@@ -41,7 +55,7 @@ router.get('/', function (req, res,) {
     console.log(sql)
     db.all(sql, [limit, offset], (err, rows) => {
       if (err) return res.send(err)
-      res.render('list', { data: rows, page, pages });
+      res.render('list', { data: rows, page, pages, query: req.query, url});
     })
   })
 })
