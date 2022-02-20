@@ -11,8 +11,15 @@ router.get('/', function (req, res,) {
 
   const params = []
 
-  if (req.body.task) {
-    params.push(`task like '%${req.body.task}%'`)
+
+
+  router.get('/login', function(req, res){
+    res.render('login')
+  })
+
+
+  if (req.query.task) {
+    params.push(`task like '%${req.query.task}%'`)
   }
 
   const page = req.query.page || 1
