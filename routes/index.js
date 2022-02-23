@@ -5,8 +5,14 @@ var path = require('path');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database(path.join(__dirname, '..', '..', 'express', 'db', 'todo.db'));
 
+function isLoggedIn(req, res, next){
+  if(req.session.user) {
+    next()
+  }else {
+    res.redirect('/login')
+  }
+}
 
-/* GET home page. */
 router.get('/login', function(req, res){
   res.render('login')
 })
@@ -18,23 +24,35 @@ router.post("/login", function (req, res){
   db.get("select * from user where email = ? and password = ?",[email, password],(err, user) =>{
   if (err) return res.send("login failed")
   if (!user) return res.send("you must sighup first")
+  req.session.user = user
   res.redirect("/")
   })
 })
 
-router.get('/', function (req, res,) {
+
+router.get('/logout', function(req, res){
+  req.session.destroy(function(err) {
+    res.redirect('/login')
+  })
+})
+
+
+
+
+router.get('/', isLoggedIn, function (req, res,) {
 
   const url = req.url == "/" ? "/?page=1" : req.url
 
   const params = []
 
 
-
-
-
   if (req.query.task) {
     params.push(`task like '%${req.query.task}%'`)
   }
+  if (req.query.complete) {
+    params.push(`complete = ${req.query.complete}`)
+  }
+
 
   const page = req.query.page || 1
   const limit = 3
@@ -55,12 +73,12 @@ router.get('/', function (req, res,) {
     console.log(sql)
     db.all(sql, [limit, offset], (err, rows) => {
       if (err) return res.send(err)
-      res.render('list', { data: rows, page, pages, query: req.query, url});
+      res.render('list', { data: rows, page, pages, query: req.query, url, user: req.session.user});
     })
   })
 })
 
-router.get('/add', function (req, res) {
+router.get('/add',isLoggedIn, function (req, res) {
   res.render('add')
 })
 
@@ -73,7 +91,7 @@ router.post('/add', function (req, res) {
   })
 })
 
-router.get('/delete/:id', function (req, res) {
+router.get('/delete/:id',isLoggedIn, function (req, res) {
   const id = req.params.id
   db.run('delete from todo where id = ?', [Number(id)], (err) => {
     if (err) return res.send(err)
@@ -81,7 +99,7 @@ router.get('/delete/:id', function (req, res) {
   })
 })
 
-router.get('/edit/:id', function (req, res) {
+router.get('/edit/:id',isLoggedIn, function (req, res) {
   const id = req.params.id
   db.get('select * from todo where id = ?', [Number(id)], (err, item) => {
     if (err) return res.send(err)
@@ -89,7 +107,7 @@ router.get('/edit/:id', function (req, res) {
   })
 })
 
-router.post('/edit/:id', function (req, res) {
+router.post('/edit/:id',isLoggedIn, function (req, res) {
   const id = Number(req.params.id)
   const task = req.body.task
   const complete = JSON.parse(req.body.complete)
