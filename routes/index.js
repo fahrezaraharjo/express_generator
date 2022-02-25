@@ -4,6 +4,9 @@ var router = express.Router();
 var path = require('path');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database(path.join(__dirname, '..', '..', 'express', 'db', 'todo.db'));
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 
 function isLoggedIn(req, res, next){
   if(req.session.user) {
@@ -14,18 +17,52 @@ function isLoggedIn(req, res, next){
 }
 
 router.get('/login', function(req, res){
-  res.render('login')
+  res.render('login', {loginMessage: req.flash('loginMessage')})
 })
 
 router.post("/login", function (req, res){
   const email = req.body.email
   const password =req.body.password
 
-  db.get("select * from user where email = ? and password = ?",[email, password],(err, user) =>{
-  if (err) return res.send("login failed")
-  if (!user) return res.send("you must sighup first")
-  req.session.user = user
-  res.redirect("/")
+  db.get("select * from user where email = ?",[email],(err, user) =>{ 
+    if (err) {
+      req.flash('loginMessage', 'Gagal Login')
+      return res.redirect("/login")
+    }
+    if (!user) {
+      req.flash('loginMessage', 'User Tidak DiTemukan')
+      return res.redirect("/login")
+    }
+    bcrypt.compare(password, user.password, function(err, result) {
+      if(result){
+      req.session.user = user
+      res.redirect("/")
+      } else {
+        req.flash('loginMessage', 'Password salah')
+        return res.redirect("/login")
+      }
+    });
+  });
+      
+  })
+
+
+router.get('/register', function(req, res){
+  res.render('register')
+})
+
+
+router.post("/register", function (req, res){
+  const email = req.body.email
+  const fullname = req.body.fullname
+  const password =req.body.password
+  
+  
+  bcrypt.hash(password, saltRounds, function(err, hash) {
+  db.run("insert into user (email, password, fullname)values(?, ?, ?)",[email, hash, fullname],(err) =>{
+    if (err) return res.send("register failed")
+    res.redirect("/login")
+    });
   })
 })
 

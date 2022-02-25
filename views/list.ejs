@@ -31,15 +31,27 @@
                         <input type="text" class="form-control" id="task" name="task" value="<%= query.task %>" />
                     </div>
                 </div>
+                <div class="row">
+                    <label for="complete" class="col-sm-2">Complete</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="complete" name="complete">
+                            <option value="">--Pilih Status</option>
+                            <option value="true"<%= query.complete == "true" ? 
+                            " selected" : ""%>>Yes</option>
+                            <option value="false"<%= query.complete == "false" ? 
+                            " selected" : ""%>>No</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
+        </div>
+        <table class="table table-striped">
+            <thead<div class="card-footer">
+                <button type="submit" class="btn btn-success">Cari</button>
+                <a href="/" class="btn btn-warning">Reset</a>
+                </div>
         </form>
-    </div>
-    <table class="table table-striped">
-        <thead<div class="card-footer">
-            <button type="submit" class="btn btn-success">Cari</button>
-            <a href="/" class="btn btn-warning">Reset</a>
-            </div>
             <tr>
                 <th>No.</th>
                 <th>Daftar Game</th>

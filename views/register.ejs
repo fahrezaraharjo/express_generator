@@ -48,22 +48,21 @@
   <body class="text-center">
     
 <main class="form-signin">
-  <% if(loginMessage.length > 0) { %>
-  <div class="alert alert-danger" role="alert">
-      <%= loginMessage %>
-  </div>
-<% } %>
-  <form action="/login" method="post">
+  <form action="/register" method="post">
     <img class="mb-4" src="/images/bootstrap-logo.svg" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
     <div class="form-floating">
       <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
       <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating">
+        <input type="text" class="form-control" id="fullname" placeholder="your fullname" name="fullname">
+        <label for="floatingInput">Fullname</label>
+      </div>
+    <div class="form-floating">
       <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
-      <label for="floatingPassword">Password</label>
+      <label for="fullname">Password</label>
     </div>
 
     <div class="checkbox mb-3">
@@ -71,8 +70,8 @@
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">doesn't have account? <a href="/register">register</a></p>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+    <p class="mt-5 mb-3 text-muted">have account? <a href="/login">signin</a></p></p>
   </form>
 </main>
 
