@@ -148,10 +148,50 @@ router.post('/edit/:id',isLoggedIn, function (req, res) {
   const id = Number(req.params.id)
   const task = req.body.task
   const complete = JSON.parse(req.body.complete)
+  if (!req.files || Object.keys(req.files).length === 0) {
   db.run('update todo set task = ?, complete = ? where id = ?', [task, complete, id], (err, row) => {
     if (err) return res.send(err)
     res.redirect('/')
   })
+}else{
+  const file = req.files.picture;
+  const fileName = `${Date.now()}-${file.name}`
+  uploadPath = path.join(__dirname, "..", "public", 'images', fileName)
+
+  // Use the mv() method to place the file somewhere on your server
+  file.mv(uploadPath, function(err) {
+    if (err)
+      return res.status(500).send(err);
+      db.run('update todo set task = ?, complete = ?, picture = ? where id = ?', [task, complete, fileName, id], (err, row) => {
+    res.redirect('/');
+      })
+  });
+}
 })
+
+router.get('/upload', function(req, res){
+  res.render('upload')
+})
+
+router.post('/upload', function(req, res) {
+  let file;
+  let uploadPath;
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  file = req.files.sampleFile;
+  uploadPath = path.join(__dirname, "..", "public", 'images', "avatar.jpg")
+
+  // Use the mv() method to place the file somewhere on your server
+  file.mv(uploadPath, function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    res.redirect('/upload');
+  });
+});
 
 module.exports = router;

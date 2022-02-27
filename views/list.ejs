@@ -3,8 +3,33 @@
 <head>
 
     <title>Learn HTML</title>
-    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-
+    <link href="/stylesheets/bootstrap.min.css"  rel="stylesheet" href="style.css" type="text/css">
+    <style>
+        body {
+          background-color: rgba(115, 116, 115, 0.822);
+        }
+        
+        h1 {
+          color: rgb(174, 216, 210);
+          margin-left: 40px;
+        }
+        label{
+            background-color: rgba(10, 12, 12, 0.877);
+        }
+        form{
+            background-color: rgb(13, 14, 13);
+        }
+        input{
+            background-color: rgb(186, 189, 185);
+        }
+        h2{
+            color: rgb(16, 141, 122);
+          
+        }
+        
+        
+        
+        </style>
 </head>
 
 <div class="w3-cell-row">
@@ -13,26 +38,27 @@
         <h1> Welcome, <%= user.fullname %></h1>
     </div>
   
-    <div class="w3-container w3-green w3-cell">
-        <a href="/logout">logout</a>
-    </div>
-  
-  </div>
-    <h1>To Do</h1>
+</div>
+<h1>To Do</h1>
+<div class="w3-container w3-green w3-cell" >
+    <a href="/logout" class="btn btn-danger" >logout</a>
+</div>
+
     <div class="card">
         <form action="" method="get">
-            <div class="card-header">
+            <div class="card-header" style="color: rgb(2, 111, 212);">
                 <h2>Pencarian</h2>
             </div>
-            <div class="card-body">
+            
+            <div class="card-body" >
                 <div class="row">
-                    <label for="task" class="col-sm-2">Kata kunci</label>
+                    <label for="task" class="col-sm-2"><h2>Kata kunci</h2></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="task" name="task" value="<%= query.task %>" />
                     </div>
                 </div>
                 <div class="row">
-                    <label for="complete" class="col-sm-2">Complete</label>
+                    <label for="complete" class="col-sm-2"><h2>Complete</h2></label>
                     <div class="col-sm-10">
                         <select class="form-control" id="complete" name="complete">
                             <option value="">--Pilih Status</option>
@@ -56,6 +82,7 @@
                 <th>No.</th>
                 <th>Daftar Game</th>
                 <th>Status</th>
+                <th>Picture</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -70,6 +97,9 @@
                         </td>
                         <td>
                             <%= item.complete ? 'Yes' : 'No' %>
+                        </td>
+                        <td>
+                            <img src="/images/<%= item.picture ? item.picture : 'default.jpg' %>" alt="" width="100" height="auto"/>
                         </td>
                         <td>
                             <a href="/edit/<%= item.id %>" class="btn btn-success">Edit</a>
