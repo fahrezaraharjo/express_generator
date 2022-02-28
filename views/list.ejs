@@ -83,6 +83,7 @@
                 <th>Daftar Game</th>
                 <th>Status</th>
                 <th>Picture</th>
+                <th>Rating</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -100,6 +101,9 @@
                         </td>
                         <td>
                             <img src="/images/<%= item.picture ? item.picture : 'default.jpg' %>" alt="" width="100" height="auto"/>
+                        </td>
+                        <td>
+                            <%= item.rating %>
                         </td>
                         <td>
                             <a href="/edit/<%= item.id %>" class="btn btn-success">Edit</a>
