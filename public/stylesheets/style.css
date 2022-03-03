@@ -1,41 +1,30 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
-}
-.bg-success {
-  --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-success-rgb), var(--bs-bg-opacity)) !important;
-}
-* {
+  margin: 0;
+  padding: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.content-table {
-  border-collapse: collapse;
-  border-spacing: 0;
+* {
+  box-sizing: border-box;
+}
+
+input[type=text], select, textarea {
   width: 100%;
-  border: 1px solid #ddd;
-}
-
-.content-table th,
-.content-table td {
-  text-align: left;
-  padding: 16px;
-}
-
-.content-table tr:nth-child(even) {
-  background-color: #f2f2f2;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  resize: vertical;
 }
 
 .btn {
-  border-radius: 5px;
+  background-color: #04AA6D;
   color: white;
-  padding: 14px 28px;
-  font-size: 16px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-decoration: none;
   cursor: pointer;
-  font-family: Arial, Helvetica, sans-serif;
 }
